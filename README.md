@@ -11,6 +11,9 @@
 - Время от времени пользователю предлагается новость из смежной или совсем не похожей области, а вдруг заинтересуется.
 - (Возможно) К каждой новости генерируется картиночка.
 
+### Схема проекта:
+![projectscheme](https://github.com/python-am-cp/Ecosystem-of-information-bots/blob/master/images/projectscheme.png)
+
 ### Используемые технологии:
 - Python
 - PostgreSQL
@@ -20,6 +23,7 @@
   - https://github.com/python273/vk_api/tree/master/examples
   - https://vk-api.readthedocs.io/en/latest/
   - https://vk.com/dev/manuals
+  
 #### Схема базы данных:
 - users ー пользователи:
   - id
@@ -42,6 +46,4 @@
 - user_group ー связь пользователя и выбранных групп
 - user_tag ー связь пользователя и выбранных им тэгов
 
-
-
-![alt text](https://avatars2.githubusercontent.com/u/11632545?v=3&s=200)
+![bdscheme](https://github.com/python-am-cp/Ecosystem-of-information-bots/blob/master/images/bdscheme.png)
