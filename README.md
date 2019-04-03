@@ -24,26 +24,4 @@
   - https://vk-api.readthedocs.io/en/latest/
   - https://vk.com/dev/manuals
   
-#### Схема базы данных:
-- users ー пользователи:
-  - id
-  - username
-  - link
-  - frequency ー  стандартная рассылка immediately, daily or weekly 
-- tags ー тэги
-- groups ー сообщества
-- posts ー посты
-  - id
-  - date ー дата публикации
-  - groupid ー где опубликован
-  - tagid ー какой тэг
-  - link ー ссылка на оригинал
-- post_content  ー связь поста с картинками, видео и тд
-- not_disturb
-  - userid
-  - type ー 1 hour, 8 hours, 24 hours 
-  - start ー  с какого момента
-- user_group ー связь пользователя и выбранных групп
-- user_tag ー связь пользователя и выбранных им тэгов
 
-![bdscheme](https://github.com/python-am-cp/Ecosystem-of-information-bots/blob/master/images/bdscheme.png)
