@@ -4,23 +4,33 @@ import random
 import time
 import datetime
 from vk_api.longpoll import VkLongPoll, VkEventType
+from peewee import *
+import os
 
 
-f = open('news.txt', 'r')
-title = []
-news = []
+full_path = os.path.realpath(__file__)
+path, filename = os.path.split(full_path)
+
+db = SqliteDatabase(path + '/database.db')
+
+class Article(Model):
+    title = CharField()
+    link = CharField()
+
+    class Meta:
+        database = db
+
+def init():
+    db.create_tables([Article])
+
+
+def add_article(title, link):
+    Article.create(title = title, link = link)
+
+def get_all_article():
+    return Article.select()
+
 interval = 5
-
-k = 0
-for line in f:
-    if(k == 0):
-        title.append(line)
-    if(k == 1):
-        news.append(line)
-    k += 1
-    k %= 3
-
-f.close()
 
 session = requests.Session()
 
@@ -37,10 +47,12 @@ vk = vk_session.get_api()
 for event in longpoll.listen():
     if event.type == VkEventType.MESSAGE_NEW and event.to_me and event.text:
         vk.messages.send(user_id=event.user_id, message='Батя, я работаю', random_id=random.random())
+
+        articles = get_all_article()
+
         i = 0
-        while 1:
-            vk.messages.send(user_id=event.user_id, message='Время ' + str(datetime.datetime.today()) + '\n' + title[i] + '\n' + news[i], random_id=random.random())
+        for art in articles:
+            vk.messages.send(user_id=event.user_id, message=str(art.id) + '\n' + art.title + '\n' + art.link, random_id=random.random())
             i += 1
-            if(i == len(title)):
-                i = 0
-            time.sleep(interval)
+            if(i > 5):
+                break
