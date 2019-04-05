@@ -233,4 +233,7 @@ $RECYCLE.BIN/
 # Windows shortcuts
 *.lnk
 
+#VK token
+Ecosystem-of-information-bots/news_collector_bot/token.txt
+
 # End of https://www.gitignore.io/api/python,windows,pycharm
