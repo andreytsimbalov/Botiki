@@ -1,5 +1,5 @@
 """
-Модуль, содержащий функции, предназначенные для сборки последних новостей
+Модуль, содержащий функции, предназначенные для сбора последних новостей
 """
 from vk_api import vk_api
 
@@ -17,7 +17,7 @@ def get_token(address: str) -> str:
     return token
 
 
-def _get_last_news(vk: vk_api.VkApiMethod, public: str, last_publication: int, batch):
+def _get_last_news(vk: vk_api.VkApiMethod, public: str, last_publication: int, batch: int):
     """
     Находит последние посты
 
@@ -25,7 +25,7 @@ def _get_last_news(vk: vk_api.VkApiMethod, public: str, last_publication: int, b
     :param public: domain паблика
     :param last_publication: unix время последней известной боту публикации
     :param batch: число новостей, проверяемых за раз
-    :return:
+    :return: list новостей позже указанного last_publication
     """
     last_news = []
     offset = 0
@@ -39,7 +39,7 @@ def _get_last_news(vk: vk_api.VkApiMethod, public: str, last_publication: int, b
     return last_news
 
 
-def get_last_news(token: str, public: str, last_publication: int, batch: int =5, with_last_publ_time: bool = True):
+def get_last_news(token: str, public: str, last_publication: int, batch: int = 5, with_last_publ_time: bool = True):
     """
     Общая функция, собирающая последние посты из указанного паблика.
 
