@@ -1,7 +1,16 @@
+"""
+Модуль, содержащий функции, предназначенные для сборки последних новостей
+"""
 from vk_api import vk_api
 
 
-def get_token(address):
+def get_token(address: str) -> str:
+    """
+    Загружает токен из файла
+
+    :param str address: местонахождение файла с токеном
+    :return: токен
+    """
     f = open(address, 'r')
     token = f.read()
     f.close()
@@ -9,6 +18,15 @@ def get_token(address):
 
 
 def _get_last_news(vk: vk_api.VkApiMethod, public: str, last_publication: int, batch):
+    """
+    Находит последние посты
+
+    :param vk: авторизованная сессия
+    :param public: domain паблика
+    :param last_publication: unix время последней известной боту публикации
+    :param batch: число новостей, проверяемых за раз
+    :return:
+    """
     last_news = []
     offset = 0
     while(True):
@@ -21,7 +39,17 @@ def _get_last_news(vk: vk_api.VkApiMethod, public: str, last_publication: int, b
     return last_news
 
 
-def get_last_news(token: str, public: str, last_publication: int, batch: int =5):
+def get_last_news(token: str, public: str, last_publication: int, batch: int =5, with_last_publ_time: bool = True):
+    """
+    Общая функция, собирающая последние посты из указанного паблика.
+
+    :param str token: токен
+    :param str public: domain паблика
+    :param int last_publication: unix время последней известной боту публикации
+    :param int batch: число новостей, проверяемых за раз (default: 5)
+    :param bool with_last_publ_time: возвращать unix время свежайшей новости? (default: True)
+    :return: list новостей позже указанного last_publication
+    """
     vk_session = vk_api.VkApi(token=token)
     try:
         vk_session._auth_token(reauth=True)
@@ -29,4 +57,8 @@ def get_last_news(token: str, public: str, last_publication: int, batch: int =5)
         print(error_msg)
         return
     vk = vk_session.get_api()
-    return _get_last_news(vk, public, last_publication, batch)
+    last_news = _get_last_news(vk, public, last_publication, batch)
+    if (with_last_publ_time):
+        return last_news, last_news[0]['date']
+    else:
+        return last_news
