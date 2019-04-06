@@ -8,7 +8,7 @@ def get_token(address):
     return token
 
 
-def _get_last_news(vk: vk_api.VkApiMethod, public: str, last_publication: int, batch: int =5):
+def _get_last_news(vk: vk_api.VkApiMethod, public: str, last_publication: int, batch):
     last_news = []
     offset = 0
     while(True):
@@ -17,6 +17,7 @@ def _get_last_news(vk: vk_api.VkApiMethod, public: str, last_publication: int, b
         last_news.extend(response)
         if len(response) < batch:
             break
+        offset += batch
     return last_news
 
 
