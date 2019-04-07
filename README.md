@@ -19,7 +19,7 @@
 - PostgreSQL
 - Flask
 - Peewee
-- vk_api / vk
+- vk_api (потому что обновляется)
   - https://github.com/python273/vk_api/tree/master/examples
   - https://vk-api.readthedocs.io/en/latest/
   - https://vk.com/dev/manuals
