@@ -12,7 +12,7 @@
 - (Возможно) К каждой новости генерируется картиночка.
 
 ### Схема проекта:
-![projectscheme](https://github.com/python-am-cp/Ecosystem-of-information-bots/blob/master/images/projectscheme.png)
+![projectscheme](https://github.com/python-am-cp/Ecosystem-of-information-bots/blob/master/images/project_scheme.png)
 
 ### Используемые технологии:
 - Python
