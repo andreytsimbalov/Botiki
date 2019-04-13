@@ -40,8 +40,5 @@ def del_user_group(id, group_id):
     UserGroup.delete().where((UserGroup.user_id == id) & (UserGroup.group_id == group_id)).execute()
 
 
-
-
-
-
-
+def get_group_names():
+    return list(Group.select().name)
