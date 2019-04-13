@@ -1,48 +1,52 @@
 import datetime
-from django.db import models
+from peewee import *
+
+database = SqliteDatabase('bot.db')
 
 
-class User(models.Model):
-    id = models.CharField(primary_key=True)  # taken from vk, and could be used to make link
-    name = models.CharField(max_length=40)
-    # only three options
-    FREQUENCY = (
-        ('I', 'Immediately'),
-        ('D', 'Daily'),
-        ('W', 'Weekly'),
-    )
-    frequency = models.CharField(max_length=1, choices=FREQUENCY)
-    last.upd = models.DateTimeField(default=datetime.datetime.now)  # last time user has got news
+class BaseModel(Model):
+    class Meta:
+        database = database
 
 
-class Group(models.Model):
-    id = models.int(primary_key=True)
-    name = models.CharField(max_length=40)
-    link = models.FixedCharField(unique=True)
+class User(BaseModel):
+    id = CharField(primary_key=True)  # taken from vk, and could be used to make link
+    name = CharField(max_length=40)
 
 
-class Tag(models.Model):
-    id = models.int(primary_key=True)
-    name = models.CharField(max_length=20)
+class Group(BaseModel):
+    id = AutoField(primary_key=True)
+    name = CharField(max_length=20)
 
 
-class Post(models.Model):
-    id = models.CharField(primary_key=True)  # taken from vk, and could be used to make link
-    name = models.CharField()
-    content = models.TextField()
-    pub_date = models.DateTimeField(default=datetime.datetime.now)
-    group_id = models.ForeignKeyField(Group)
-    tags = models.ManyToManyField(Tag)
+
+class Tag(BaseModel):
+    id = CharField(primary_key=True)
+    name = CharField(max_length=40)
+
+class Post(BaseModel):
+    id = AutoField(primary_key=True)  # taken from vk, and could be used to make link
+    name = CharField()
+    content = TextField()
+    pub_date = DateTimeField(default=datetime.datetime.now)
+    group_id = ForeignKeyField(Group)
+    link = FixedCharField(unique=True)
 
 
-class PostAttachment(models.Model):
-    post_id = models.ForeignKeyField(Post)
-    attachment = models.CharField()
+class PostTag(BaseModel):
+    post_id = ForeignKeyField(Post)
+    tag_id = ForeignKeyField(Tag)
+
+
+class PostAttachment(BaseModel):
+    post_id = ForeignKeyField(Post)
+    attachment = CharField()
 
 
 # for each group each user has a number of tags
-class UserGroup(models.Model):
-    user_id = models.ForeignKeyField(User)
-    group_id = models.ForeignKeyField(Group)
-    tag_id = models.ForeignKeyField(Tag)
-    spec_freq = models.CharField(default=None)
+class UserGroup(BaseModel):
+    user_id = ForeignKeyField(User)
+    group_id = ForeignKeyField(Group)
+    tag_id = ForeignKeyField(Tag)
+    spec_freq = CharField(default=None)
+    last_upd = DateTimeField(default=datetime.datetime.now)  # last time user has got news
