@@ -12,6 +12,8 @@ class BaseModel(Model):
 class User(BaseModel):
     id = CharField(primary_key=True)  # taken from vk, and could be used to make link
     name = CharField(max_length=40)
+    last_upd = DateTimeField(default=datetime.datetime.now)  # last time user has got news
+    frequency = CharField(max_lengthrField(primary_key=True)
 
 
 class Group(BaseModel):
@@ -19,10 +21,10 @@ class Group(BaseModel):
     name = CharField(max_length=20)
 
 
-
 class Tag(BaseModel):
-    id = CharField(primary_key=True)
+    id =CharField(primary_key=True)
     name = CharField(max_length=40)
+
 
 class Post(BaseModel):
     id = AutoField(primary_key=True)  # taken from vk, and could be used to make link
@@ -48,5 +50,3 @@ class UserGroup(BaseModel):
     user_id = ForeignKeyField(User)
     group_id = ForeignKeyField(Group)
     tag_id = ForeignKeyField(Tag)
-    spec_freq = CharField(default=None)
-    last_upd = DateTimeField(default=datetime.datetime.now)  # last time user has got news

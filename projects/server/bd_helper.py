@@ -1,7 +1,7 @@
 import datetime
 import peewee
 
-from models import User, Group, Post, Tag, PostTag, PostAttachment, UserGroup, database
+#from models import User, Group, Post, Tag, PostTag, PostAttachment, UserGroup, BaseModel
 
 
 def create_tables():
@@ -42,3 +42,7 @@ def del_user_group(id, group_id):
 
 def get_group_names():
     return list(Group.select().name)
+
+
+def get_users_post(id):
+    return list(Post.select(id).join(PostTag).join(UserGroup).join(User).where((User.id ==id)&(Post.pub_date<=User.last_upd)))
