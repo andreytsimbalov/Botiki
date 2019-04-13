@@ -4,19 +4,6 @@
 from vk_api import vk_api
 
 
-def get_token(address: str) -> str:
-    """
-    Загружает токен из файла
-
-    :param str address: местонахождение файла с токеном
-    :return: токен
-    """
-    f = open(address, 'r')
-    token = f.read()
-    f.close()
-    return token
-
-
 def auth(token: str):
     """
     Авторизуется в системе Vk
