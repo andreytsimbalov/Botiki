@@ -1,12 +1,11 @@
-from modules.vkcollector import collector
-from modules.texthandler import handler
+from modules import texthandler, vkcollector
 import time
 
 
 class Pizza:
     def __init__(self, token, publics, allowed_tags, last_update, check_delay):
         self.token = token
-        self.session = collector.auth(token)
+        self.session = vkcollector.auth(token)
         self.allowed_tags = allowed_tags
         self.publics = publics
         self.last_update = last_update
@@ -14,12 +13,12 @@ class Pizza:
         self.check_delay = check_delay
 
     def _handle_news(self, news: list) -> list:
-        return list(map(lambda item: handler.handle_news(news=item, allowed_tags=self.allowed_tags), news))
+        return list(map(lambda item: texthandler.handle_news(news=item, allowed_tags=self.allowed_tags), news))
 
     def _get_news(self):
         return list(map(
-            lambda public: collector.get_last_news(vk=self.session, public=public, last_publication=self.last_update,
-                                                   with_last_publ_time=False), self.publics))
+            lambda public: vkcollector.get_last_news(vk=self.session, public=public, last_publication=self.last_update,
+                                                     with_last_publ_time=False), self.publics))
 
     def check_news(self):
         """

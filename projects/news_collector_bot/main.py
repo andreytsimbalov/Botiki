@@ -1,5 +1,5 @@
 from pizza import Pizza
-from modules.zmqconnection import connections
+from modules import connections
 import spate
 
 

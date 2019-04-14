@@ -3,7 +3,7 @@
 """
 import threading
 import time
-from modules.zmqconnection import connections
+from modules import connections
 
 
 class ClientThread(threading.Thread):
