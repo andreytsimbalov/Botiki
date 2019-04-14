@@ -22,16 +22,23 @@ def execute(request: dict, pizza: object) -> dict:
     }
 
 
-def generate_request(command: str, name: str, data: dict) -> dict:
+def generate_request(command: str, body: dict, type_bot: str = None, port: int = None) -> dict:
     """
-    Гененирует запрос.
+    Генерирует запрос
 
     :param command: команда запроса
-    :param name: имя
-    :param data: содержимое имени
-    :return: сгенерированный словарь нужного формата для запроса
+    :param body: тело запроса
+    :param type: тип бота
+    :param port: порт сервера бота
+    :return: запрос
     """
-    return {
+
+    result = {
         'command': command,
-        name: data
+        'data': body
     }
+    if (type_bot is not None):
+        result['type'] = type_bot
+    if (port is not None):
+        result['port'] = port
+    return result
