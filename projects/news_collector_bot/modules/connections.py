@@ -39,7 +39,9 @@ class ClientConnection:
         Генерирует и отправляет запрос на основной сервер с целью добавления новых нововстей в базу данных проекта
         """
         try:
-            request = tfcshandler.generate_request('add', 'news', self.pizza.last_news)
+            request = tfcshandler.generate_request('add', {
+                'news': self.pizza.last_news
+            })
             answer = self._send(request)
             if (answer['result'] == 'OK'):
                 self.pizza.clear_last_news()
