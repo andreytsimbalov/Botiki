@@ -4,7 +4,7 @@
 import re
 
 
-def get_necessary_data(news, fields=('date', 'text', 'attachments')):
+def get_necessary_data(news, fields=('date', 'text', 'attachments', 'id', 'from_id')):
     """
     Функция забирает от новости только нужные поля
 
@@ -32,7 +32,7 @@ def get_text_tags(post_text: str, tag_pattern: str = r'#\S+', text_pattern: str 
     return text[0], tags
 
 
-def get_text_header(text: str, header_pattern: str = r'^.+') -> str:
+def get_text_header(text: str, header_pattern: str = r'^.+') -> tuple:
     """
     Находит заголовок (первое предложение) в тексте новости
 
@@ -41,7 +41,8 @@ def get_text_header(text: str, header_pattern: str = r'^.+') -> str:
     :return: заголовок (первое предложение)
     """
     header = re.search(header_pattern, text)
-    return header[0]
+    another_text = text[len(header[0])+1:]
+    return header[0], another_text
 
 
 def get_text_sentences(text: str, max_symbols: int = 250, paragraph_patter: str = r'.+?\n\n', sentence_patter: str = r'.+?\.'):
@@ -95,7 +96,7 @@ def handle_tags(tags: list, allowed_tags: list) -> list:
     return new_tags
 
 
-def handle_news(news: dict, allowed_tags: list, extended: bool = True) -> dict:
+def handle_news(news: dict, allowed_tags: list) -> dict:
     """
     Обрабатывает новость
 
@@ -106,15 +107,16 @@ def handle_news(news: dict, allowed_tags: list, extended: bool = True) -> dict:
     """
     news_data = get_necessary_data(news)
     text_data, tags_data = get_text_tags(news_data['text'])
-    if extended:
-        text = get_text_sentences(text_data)
-    else:
-        text = get_text_header(text_data)
+    header, text_data_without_header = get_text_header(text_data)
+    text = get_text_sentences(text_data_without_header)
     tags = handle_tags(tags_data, allowed_tags)
     attachments = handle_attachments(news_data['attachments'])
     return {
+        'id': news_data['id'],
         'date': news_data['date'],
-        'text': text,
+        'header': header,
+        'content': text,
+        'group_id': news_data['from_id'],
         'tags': tags,
         'attachments': attachments
     }

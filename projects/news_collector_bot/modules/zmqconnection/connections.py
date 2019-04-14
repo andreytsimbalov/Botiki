@@ -6,6 +6,7 @@ class ServerConnection:
     """
     Создает серверный поток, ожидающий запросов на изменения основных данных бота.
     """
+
     def __init__(self, port, pizza, ip='127.0.0.1'):
         self.context = zmq.Context()
         self.socket = self.context.socket(zmq.REP)
@@ -22,6 +23,7 @@ class ClientConnection:
     """
     Создает клиентский поток
     """
+
     def __init__(self, port, pizza, ip='127.0.0.1'):
         self.context = zmq.Context()
         self.socket = self.context.socket(zmq.REQ)
@@ -56,7 +58,12 @@ def start_request(port: str, ip: str = '127.0.0.1'):
     context = zmq.Context()
     socket = context.socket(zmq.REQ)
     socket.connect('tcp://{}:{}'.format(ip, port))
-    request = tfcshandler.generate_request('get', 'starter_kit', ['publics', 'allowed_tags', 'last_update'])
+    request = tfcshandler.generate_request('register',
+                                           {
+                                               'last_update': None,
+                                               'tags': None,
+                                               'publics': None
+                                           }, 'collector', int(port))
     socket.send_pyobj(request)
     answer = socket.recv_pyobj()
-    return answer['data']['publics'], answer['data']['allowed_tags'], answer['data']['last_update']
+    return answer['data']['publics'], answer['data']['tags'], answer['data']['last_update']
